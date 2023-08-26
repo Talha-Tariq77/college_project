@@ -1,0 +1,127 @@
+Ultimate Tic Tac Toe Instructions\nPress ENTER to continue\nType \'0\' to go back\n
+Page 1 of 7:
+When in game, input '000' to save and abort the game, returning you back to the main menu.
+Ultimate Tic Tac Toe consists of a 3 by 3 global Tic Tac Toe grid containing local Tic Tac Toe grids:
+╔════════════════╗
+║###║║###║║###║
+║###║║###║║###║
+║###║║###║║###║
+╠════════════════╣
+║###║║###║║###║
+║###║║###║║###║
+║###║║###║║###║
+╠════════════════╣
+║###║║###║║###║
+║###║║###║║###║
+║###║║###║║###║
+╚════════════════╝
+
+Page 2 of 7:
+The first player can position their symbol anywhere on the global grid using the keypad:
+The location of numbers on the keypad correspond to the locations on the global grid.
+To place the symbol on the centre of the top-middle local grid:
+
+-Input the number at the top of the keypad (9), this selects the local grid
+-Then select the number at the centre of the keypad (5), which selects the location at that local grid.
+╔════════════════╗
+║###║║###║║###║
+║###║║#X#║║###║
+║###║║###║║###║
+╠════════════════╣
+║###║║###║║###║
+║###║║###║║###║
+║###║║###║║###║
+╠════════════════╣
+║###║║###║║###║
+║###║║###║║###║
+║###║║###║║###║
+╚════════════════╝
+The previous move is shown after every turn:
+previous: 85
+
+Page 3 of 7:
+The second player can then choose from the local grid, corresponding to the location chosen by the first player.
+
+Here, the second player must choose a location from the bottom right local grid, corresponding to the first player's choice.
+╔════════════════╗
+║###║║###║║###║
+║###║║#X#║║###║
+║###║║###║║###║
+╠════════════════╣
+║###║║###║║###║
+║###║║#O#║║###║
+║###║║###║║###║
+╠════════════════╣
+║###║║###║║###║
+║###║║###║║###║
+║###║║###║║###║
+╚════════════════╝
+previous 55
+
+Page 4 of 7:
+If a player wins a local grid, it is marked for them
+╔════════════════╗
+║###║║###║║###║
+║###║║###║║###║
+║###║║###║║###║
+╠════════════════╣
+║###║║OOO║║###║
+║###║║OOO║║###║
+║###║║OOO║║###║
+╠════════════════╣
+║###║║###║║###║
+║###║║###║║###║
+║###║║###║║###║
+╚════════════════╝
+
+Page 5 of 7:
+To win, you must win 3 local grids in a row.
+╔════════════════╗
+║###║║###║║OOO║
+║###║║###║║OOO║
+║###║║###║║OOO║
+╠════════════════╣
+║###║║OOO║║###║
+║###║║OOO║║###║
+║###║║OOO║║###║
+╠════════════════╣
+║OOO║║###║║###║
+║OOO║║###║║###║
+║OOO║║###║║###║
+╚════════════════╝
+Computer Won!
+
+Page 6 of 7:
+╔════════════════╗
+║###║║###║║OOO║
+║###║║#X#║║OOO║
+║###║║###║║OOO║
+╠════════════════╣
+║###║║###║║###║
+║###║║###║║###║
+║###║║###║║###║
+╠════════════════╣
+║###║║###║║###║
+║###║║###║║###║
+║###║║###║║###║
+╚════════════════╝
+previous 99
+
+In this case, the local grid the second player has been directed to by the first player is already full,
+so the second player may place their symbol anywhere on the global grid.
+
+Page 7 of 7
+╔════════════════╗
+║###║║###║║OOO║
+║###║║#X#║║OOO║
+║###║║###║║OOO║
+╠════════════════╣
+║###║║###║║###║
+║###║║###║║###║
+║###║║###║║###║
+╠════════════════╣
+║###║║###║║###║
+║###║║##O║║###║
+║###║║###║║###║
+╚════════════════╝
+previous 26

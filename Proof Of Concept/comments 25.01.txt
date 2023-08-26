@@ -1,0 +1,2 @@
+when exited, game state saves automatically unless won, lost drawn
+game saves automatically every turn

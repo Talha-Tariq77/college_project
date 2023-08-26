@@ -1,0 +1,9 @@
+https://inventwithpython.com/chapter10.html
+http://moodle1.kedst.ac.uk/pluginfile.php/109136/mod_resource/content/0/Simple_thread.py
+https://www.youtube.com/watch?v=jAaJZLqryTI
+https://www.youtube.com/watch?v=gNhbZUOMl0M
+https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe
+https://en.wikipedia.org/wiki/Evaluation_function
+https://en.wikipedia.org/wiki/Monte_Carlo_tree_search
+https://towardsdatascience.com/create-ai-for-your-own-board-game-from-scratch-minimax-part-2-517e1c1e3362
+file:///C:/Users/187344/Downloads/Analysis_Example_Top_level.pdf

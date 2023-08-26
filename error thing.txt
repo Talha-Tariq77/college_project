@@ -1,0 +1,32 @@
+previous: (2, 4)
+AI Turn
+╔════════════════╗
+║##O║║XXX║║###║
+║###║║XXX║║XOX║
+║XO#║║XXX║║O#X║
+╠════════════════╣
+║OOO║║XXX║║###║
+║OOO║║XXX║║O##║
+║OOO║║XXX║║OXX║
+╠════════════════╣
+║OOO║║OXO║║OOO║
+║OOO║║XXO║║OOO║
+║OOO║║XOX║║OOO║
+╚════════════════╝
+
+previous: (4, 2)
+Human Turn
+Coordinates: 73
+Invalid Move!
+Coordinates: 73
+Invalid Move!
+Coordinates: 73
+Invalid Move!
+Coordinates: 
+Invalid Move!
+Coordinates: 73
+Invalid Move!
+Coordinates: 73
+Invalid Move!
+Coordinates: 
+Process finished with exit code -1

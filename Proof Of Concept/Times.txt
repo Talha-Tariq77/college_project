@@ -1,0 +1,12 @@
+Monte-Carlo, one iteration
+0.09374284744262695
+get_children function for empty root
+0.0
+simulate function:
+0.015 to 0.03124523162841797
+
+
+2.796698570251465
+
+without change to expansion- adding 1 node- 36 seconds
+with change to expansion- adding 1 to node 24 seconds

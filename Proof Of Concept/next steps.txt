@@ -1,0 +1,4 @@
+heuristic pruning
+read pruning doc downloaded on phone, how to prune with MCTS,
+maybe RAVE,
+dont think I can make the check_win any better than it is

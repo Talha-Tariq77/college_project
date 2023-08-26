@@ -1,0 +1,3 @@
+Too much node expansion
+Try to prune the amount of nodes expanded
+Try to use heuristics for this.

@@ -1,0 +1,10 @@
+project technology heading
+mine isnt all that clear
+need to go deep into GUI and UI
+need to explain all functions in much more detail, with absolute clarity
+need to have a high level overview and a flowchart, and class diagram as well as heirarchy chart.
+
+should it be the parameter data type or return data type for the method part in Class Diagram
+
+Do class diagram, then flowcharts- of game and other
+Do high level overviews

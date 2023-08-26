@@ -1,0 +1,106 @@
+domain-specific expert knowledge
+How to expand with high branching factor,
+other approaches to MCTS
+
+
+Check how this guy stored the game_state, thats the key to understanding his code:
+https://github.com/chaitanya100100/AI-Agent-for-Ultimate-Tic-Tac-Toe/blob/master/source/agent.py
+
+Implement all game rules
+
+Ill find a system to deal with the possible moves etc... because check win will later also need to be in the select, etc..
+
+then work on making it faster, and increasing the number of iterations.
+
+Then do game display
+
+Check_win function is what is taking so long, do the profiling to check the times, and use the online profiling documentation to help confirm and figure this out. Look at the time taken for subtasks of the check_win function.
+
+
+check_win
+
+
+The check
+C:\Users\USER\OneDrive - King Edward VI College, Stourbridge\Computer Science\NEA\Proof Of Concept>python -m cProfile newest.py
+
+Remove the game_tree and use the children, parents of the nodes as the actual game_tree
+To refer to the depth=1 nodes, just refer to the children of the root node.
+
+Reorganise the nodes, and what they have in them.
+
+Reduce the amount of times the find_turn function is called.
+Make the check_win function a lot better.
+
+Another way to check if the node is fully expanded or not is by checking if the node has any spaces left. If it does, it is not fully expanded. But what about the nodes that have been won, that do have spaces.
+
+I am first trying to make a new variable in the Node class called possible_children which is equal to calling the get_children() function. This way the function will not need to be called again and again for the same node in the expansion function, and I can compare the len of the node.children to the node.possible_children to determine of the node is fully expanded.
+But having a possible_children variable for each node might take up too much memory, so instead I might just store the len of the possible children.
+
+This is the way to go about it:
+possible_children = get_children in node
+and then update at each expansion to reduce the possible children for that node,
+at selection if there are possible children, then it is stopped and thats the node to be expanded.
+At expansion the possible_children can be used to pick a child node randomly.
+either way this needs to be updated every time expansion happens, so that the possible_children is not equal to the children. Then in selection, if there are possible_children, then expansion stops.
+
+
+I am solving this by expanding by one node at a time instead of more than one, and by stopping selection when a node that is not fully expanded is reached instead of just nodes that arent at all expanded (leaf nodes) 
+
+
+Look at bookmarks and notes I made last time to understand how the large branching factor and the speed at which the tree is expanding is causing the speed to be very slow.
+
+Takes long because of the massive number of nodes being created in the depth = 2 and below.
+
+
+Time it
+Declutter it
+Treat it like normal, and see if its working properly
+
+replicate what happened when count reached 81, and the 1600 nodes in depth=2 were created, this took a very long time. Replicate this, and then I can fix it.
+
+Address deepcopy first
+If it works fast without deepcopy, great
+Otherwise, address the recursive range(3)s by checking if they are the problem
+Try to make code better and more efficient
+
+
+If not, replace the storage method.
+Need to replace the storage method so I dont have to use deep copies or anything like that.
+
+Notes:
+Simulation is slow
+Redo code
+Try using different storage method
+maybe deepcopy
+maybe the recursive range(3)s
+will probably have to try with the other storage method.
+
+
+
+
+Checklist- Do it by 1:
+Check_win function
+Get_children
+check check_move function
+
+After everything above, the MCTS algorithm should be working with the new grid.
+Make it work properly.
+
+Heuristic_move function
+
+Then look at how to improve its move making.
+Then look at difficulty levels and how to implement them.
+
+Then clean up your code.
+Then implement everything possible as best as possible and email teachers the code and everything.
+
+I am currently making the game work with the larger grid instead of local grids only.
+Make the game work with it, the AI will work with it easily.
+
+For the check_win function, a new win mode doesnt need to be introduced to differentiate between the global board winning and the local board winning.
+
+If a local board has won, replace it so that each symb of it is replaced with an O or an X. This would mean the AI or human players cant put their symbs there since they are already occupied.
+
+When the global board has won, return the 0,1 0.5,1 or 1,1.
+
+Making that template for simulations would be far far more difficult this time, so a good method for that needs to be worked out.

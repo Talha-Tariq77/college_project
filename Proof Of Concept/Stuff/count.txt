@@ -1,0 +1,3 @@
+Good moves
+Monte Carlo Tree Search Model: 3 good moves/30
+newest: 28 good moves/30

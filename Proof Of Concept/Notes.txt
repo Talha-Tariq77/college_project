@@ -1,0 +1,7 @@
+This idea was originally described in this paper:
+
+Remi Coulom. Efficient selectivity and backup operators in monte-carlo tree search. In Computers and games, pages 72–83. Springer, 2007.
+
+It was also used in:
+
+Max Roschke and Nathan Sturtevant. UCT Enhancements in Chinese Checkers Using an Endgame Database, IJCAI Workshop on Computer Games, 2013.

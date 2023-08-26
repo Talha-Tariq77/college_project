@@ -1,0 +1,17 @@
+4 steps
+stopping and selection of actual move
+UCT equation how selection occurs
+advantages and why
+
+monte carlo done
+DONE!!!!!
+
+man needs to work on the modelling
+data flow diagram
+functions etc.. needed
+DONNEEE
+Make sure you check all the information is correct!!!!!
+
+Use modelling to make the objectives in large detail
+
+Do more, dont worry about specifics!

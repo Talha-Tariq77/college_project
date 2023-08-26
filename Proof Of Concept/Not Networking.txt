@@ -1,0 +1,19 @@
+Leave networking in analysis,
+go through the monte carlo in more depth in the prototype,
+go through the prototype in more detail.
+
+Respond to feedback with Analysis.
+
+Leave out networking bits still, still do
+rest.
+
+Wants to check the code after the summer,
+then if its good enough, I can take out the
+networking bits.
+
+But project is complex enough with just AI.
+
+Project is open-ended, can make changes until final submission.
+can make code changes after summer?
+what if code not good enough?
+any tests/ chances to increase predicted grades after summer?

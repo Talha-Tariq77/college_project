@@ -1,0 +1,9 @@
+Testing
+
+normal tests
+difficulty
+win
+draw
+loss
+obvious 'mistakes' cannot be checked for as you cant call it a mistake till the end of the game
+no definite bad moves until close to end of game

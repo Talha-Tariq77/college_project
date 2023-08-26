@@ -1,0 +1,11 @@
+Won grids:
+---
+| |
+---
+
+\ /
+ X 
+/ \
+
+Test each method/function?
+How to test with algorithm

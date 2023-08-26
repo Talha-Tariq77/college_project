@@ -1,0 +1,1 @@
+{"Player 1": 500, "Joan": 540, "Les": 550, "Jill": 590, "James": 600, "Jenny": 690, "John": 750}
