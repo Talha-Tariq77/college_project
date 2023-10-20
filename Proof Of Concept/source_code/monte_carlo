@@ -1,0 +1,52 @@
+import math
+import random
+import node
+
+game_state = [[" "," "," ", " "," "," ", " "," "," "],[" "," "," ", " "," "," ", " "," "," "],[" "," "," ", " "," "," ", " "," "," "],
+              [" "," "," ", " "," "," ", " "," "," "],[" "," "," ", " "," "," ", " "," "," "],[" "," "," ", " "," "," ", " "," "," "],
+              [" "," "," ", " "," "," ", " "," "," "],[" "," "," ", " "," "," ", " "," "," "],[" "," "," ", " "," "," ", " "," "," "]]
+
+win_loss = ["OOO", "XXX"]
+
+possible_checks = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+
+check_lines = {0: [[0, 1, 2], [0, 3, 6], [0, 4, 8]],
+                  1: [[0, 1, 2], [1, 4, 7]],
+                  2: [[0, 1, 2], [2, 5, 8], [2, 4, 6]],
+                  3: [[3, 4, 5], [0, 3, 6]],
+                  4: [[3, 4, 5], [1, 4, 7], [0, 4, 8], [2, 4, 6]],
+                  5: [[3, 4, 5], [2, 5, 8]],
+                  6: [[6, 7, 8], [0, 3, 6], [2, 4, 6]],
+                  7: [[6, 7, 8], [1, 4, 7]],
+                  8: [[6, 7, 8], [2, 5, 8], [0, 4, 8]],}
+
+def check_win(current_state, prev_move):
+    grid = prev_move[0]
+    value = prev_move[1]
+    # check current_grid
+    for check_line in check_lines[value]:
+        current_line = ""
+        for check_value in check_line:
+            current_line += game_state[grid][check_value]
+
+        if current_line in win_loss:
+            return win_loss.index(line)
+        # returns winner (O = 0, X=1) or None
+    
+    return None
+
+
+
+
+
+for i in range(9):
+
+    result = []
+
+    for line in possible_checks:
+        if i in line:
+            result.append(line)
+    print("%s: %s," % (i, result))
+
+
+
