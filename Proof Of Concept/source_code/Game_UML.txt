@@ -1,0 +1,11 @@
+@startuml
+class Game {
+    printGrid()
+    checkAskMoveA()
+    checkValidMoveA()
+    checkValidMoveB()
+    getPlayerMove()
+    run()
+        __init__()
+}
+@enduml

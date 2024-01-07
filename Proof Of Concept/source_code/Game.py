@@ -2,6 +2,8 @@ from Globals import *
 
 class Game:
     def printGrid(self, current_state):
+        # print physical grid
+
         print("-" * 12)
         for m in range(3):
             for i in range(3):
@@ -16,6 +18,12 @@ class Game:
             print("-" * 12)
         
     def checkAskMoveA(self):
+        """
+        checks if move A needs to be asked for
+        - if the previous move [A]'s grid has valid moves
+        returns False
+        otherwise, since player can play anywhere, returns False
+        """
         if prev_move is None:
             return True
         elif not possible_moves[prev_move[1]]:
@@ -24,6 +32,8 @@ class Game:
             return False
     
     def checkValidMoveA(self, moveA):
+        """
+        checks if moveA is a syntactically valid and possible move"""
         if moveA in correct_move_inputs:
             if possible_moves[int(moveA) - 1]:
                 return True
@@ -31,6 +41,7 @@ class Game:
         return False
     
     def checkValidMoveB(self, move):
+        """checks if moveB is syntactically valid and possible move"""
         if move[1] in correct_move_inputs:
             if int(move[1]) - 1 in possible_moves[int(move[0])]:
                 return True
@@ -83,24 +94,22 @@ class Game:
     def run(self):
         global prev_move
         global current_player
+
+        # these are *global* variables from another file, being reassigned here
+        # but python assumes all variables 'declared' in a function are local variables
+        # to break this assumption, these variables must be declared as global
         
         while True:
             self.printGrid(game_state)
 
-            a, b = self.getPlayerMove()
-
-            move = a, b
-            add_move(game_state, move, current_player)
-
+            prev_move = self.getPlayerMove()
             
-            prev_move = move
-
-            updateGameState(game_state, major_grid, prev_move)
+            add_move(game_state, prev_move)
+            
+            updateGameState(game_state, prev_move)
             
             current_player = swap(current_player)
             
-
-
     
 
 game = Game()

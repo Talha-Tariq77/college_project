@@ -1,6 +1,4 @@
-from Globals import *
+import Node
 class MonteCarlo:
-    pass
     
-
     
