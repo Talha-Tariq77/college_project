@@ -1,7 +1,7 @@
 from Globals import *
 
 class Node:
-    def __init__(self, prev_move, parent):
+    def __init__(self, prev_move, parent=None):
         self.prev_move = prev_move
         self.parent = parent
         self.children = []

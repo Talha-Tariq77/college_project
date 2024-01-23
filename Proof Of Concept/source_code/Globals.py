@@ -61,7 +61,7 @@ def checkWinGrid(grid, prev_move):
         
     
 
-def updateGameState(game_state, prev_move):
+def updateGameState(game_state, prev_move, major_grid, possible_moves):
     # updates the Major Grid, checking result of prev_move's grid
     # removes possible moves of the local grid if grid is terminated
 
@@ -92,3 +92,6 @@ def swap(player):
 # when changing a singular variable must return
 # allowed to change inputted data structures but not inputted singular varaibles
 
+
+
+# globals as game.py locals
