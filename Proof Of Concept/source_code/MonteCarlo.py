@@ -16,8 +16,11 @@ class MonteCarlo:
         self.generate_root_children()
     
     def generate_root_children(self):
-        for move in self.possible_moves:
-            self.root.children.append(Node(move, self.root))
+        for x in range(len(self.possible_moves)):
+            for y in self.possible_moves[x]:
+                self.root.children.append(Node((x,y), self.root))
+
+        pass
 
     def UTC_calculate(self, a):
         return (a.win / a.loss) + self.C * (math.sqrt(math.log(a.parent.sim) / a.sim))
@@ -55,13 +58,17 @@ class MonteCarlo:
         return (current, current_player)
     
 
-    def get_valid_moves(self, prev_move):
+    def generate_valid_move(self, prev_move):
         if self.possible_moves[prev_move[1]]:
-            return self.possible_moves
+            return prev_move[1], random.choice(self.possible_moves[prev_move[1]])
         else:
-            return self.possible_moves[prev_move[1]]
+            gen = random.choice()
+            while 
         
     def expansion(self, node):
+        if self.possible_moves[node.prev_move[1]]:
+            move = node.prev_move[1], random.choice(node.prev_move)
+
         move = random.choice(self.get_valid_moves(node.prev_move))
         child = Node(prev_move=move, parent=node)
 
@@ -87,12 +94,13 @@ class MonteCarlo:
 
         while result is None:
             if sim_possible_moves[prev_move[1]]:
-                prev_move = random.choice(sim_possible_moves)
+                move1 = random.randrange(0,9)
+                prev_move = move1, random.choice(sim_possible_moves[move1])
             else:
-                prev_move = random.choice(sim_possible_moves[prev_move[1]])
+                prev_move = prev_move[1], random.choice(sim_possible_moves[prev_move[1]])
             
             Globals.updateGameState(sim_state, prev_move, sim_major_grid, sim_possible_moves)
-            result = Globals.checkWinGrid(sim_major_grid, prev_move)
+            result = Globals.checkWinGrid(sim_major_grid, prev_move[0])
         
         return result
     
@@ -135,6 +143,11 @@ class MonteCarlo:
             self.backpropogation(selected_node_child, sim_result, current_player)
         
         return self.find_best_UTC(self.root.children)
+    
+    def update_local_variables(self):
+        self.current_state = Globals.game_state
+        self.major_grid = Globals.major_grid
+        self.possible_moves = Globals.possible_moves
 
 
 

@@ -117,13 +117,13 @@ class Game:
             
             else:
                 self.printGrid(game_state)
+
+                self.monteCarlo.__init__(game_state, major_grid, possible_moves)
                 
                 node = self.monteCarlo.tree_search()
                 prev_move = node.prev_move()
 
                 add_move(game_state, prev_move)
-
-                updateGameState(game_state, prev_move, major_grid, possible_moves)
 
             
             current_player = swap(current_player)
