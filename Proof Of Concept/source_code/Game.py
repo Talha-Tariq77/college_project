@@ -1,6 +1,11 @@
 from Globals import *
 
+import MonteCarlo
+
 class Game:
+    def __init__(self) -> None:
+        self.monteCarlo = MonteCarlo.MonteCarlo(game_state, major_grid, possible_moves)
+
     def printGrid(self, current_state):
         # print physical grid
 
@@ -100,13 +105,26 @@ class Game:
         # to break this assumption, these variables must be declared as global
         
         while True:
-            self.printGrid(game_state)
+            if current_player == 0:
 
-            prev_move = self.getPlayerMove()
+                self.printGrid(game_state)
+
+                prev_move = self.getPlayerMove()
+                
+                add_move(game_state, prev_move)
+                
+                updateGameState(game_state, prev_move, major_grid, possible_moves)
             
-            add_move(game_state, prev_move)
-            
-            updateGameState(game_state, prev_move)
+            else:
+                self.printGrid(game_state)
+                
+                node = self.monteCarlo.tree_search()
+                prev_move = node.prev_move()
+
+                add_move(game_state, prev_move)
+
+                updateGameState(game_state, prev_move, major_grid, possible_moves)
+
             
             current_player = swap(current_player)
             
