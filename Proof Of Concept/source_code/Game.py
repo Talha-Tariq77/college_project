@@ -4,7 +4,7 @@ import MonteCarlo
 
 class Game:
     def __init__(self) -> None:
-        self.monteCarlo = MonteCarlo.MonteCarlo(game_state, major_grid, possible_moves)
+        self.monteCarlo = MonteCarlo.MonteCarlo()
 
     def printGrid(self, current_state):
         # print physical grid
@@ -118,7 +118,7 @@ class Game:
             else:
                 self.printGrid(game_state)
 
-                self.monteCarlo.__init__(game_state, major_grid, possible_moves)
+                self.monteCarlo.update_local_variables(game_state, major_grid, possible_moves, prev_move)
                 
                 node = self.monteCarlo.tree_search()
                 prev_move = node.prev_move()

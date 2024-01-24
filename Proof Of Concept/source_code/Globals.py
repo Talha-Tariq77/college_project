@@ -44,7 +44,7 @@ def checkWinGrid(grid, prev_move):
         for value in line:
             current_check += grid[value]
         
-        if current_check in win_loss:
+        if current_check in win_loss[:2]:
             return win_loss.index(current_check)
     
     if " " not in grid:
@@ -80,6 +80,7 @@ def updateGameState(game_state, prev_move, major_grid, possible_moves):
 def add_move(game_state, prev_move):
     game_state[prev_move[0]][prev_move[1]] = winners[current_player]
     possible_moves[prev_move[0]].remove(prev_move[1])
+    # move = random.choice(self.get_valid_moves(node.prev_move))
 
 
 def swap(player):
