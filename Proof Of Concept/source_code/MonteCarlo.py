@@ -6,7 +6,7 @@ import Globals
 import copy
 
 class MonteCarlo:
-    def __init__(self) -> None:
+    def __init__(self, prev_move, init_state, init_major_grid, possible_moves, player) -> None:
         self.prev_move = None
         self.root = Node((-1,-1))
         self.current_state = None
