@@ -23,6 +23,8 @@ check_lines = {0: [[0, 1, 2], [0, 3, 6], [0, 4, 8]],
                   7: [[6, 7, 8], [1, 4, 7]],
                   8: [[6, 7, 8], [2, 5, 8], [0, 4, 8]]
                   }
+
+all_lines = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
 # for each of the prev_move locations, the associated checks
 
 init_possible_moves = [[0,1,2,3,4,5,6,7,8] for x in range(9)]
@@ -35,6 +37,17 @@ init_prev_move = (-1, -1)
 
 starting_player = 0
 
+def checkWinGridFull(grid):
+    curr_check_line = ""
+    for line in all_lines:
+        for i in line:
+            curr_check_line += grid[i]
+        if curr_check_line in win_loss:
+            return win_loss.index(curr_check_line)
+        curr_check_line = ""
+    
+    if " " not in grid:
+        return 2
 
 def checkWinGrid(grid, prev_move):
     # prev move is prev_move[1] here, grid is local grid

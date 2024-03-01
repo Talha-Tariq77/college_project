@@ -9,3 +9,13 @@ class Node:
         self.sim = 0
         self.UTC = 0
     # prev_move, UTC values
+        
+    def get_lineage(self):
+        lineage = []
+        current = self
+        while current.parent is not None:
+            lineage.append(current.prev_move)
+            current = current.parent
+        lineage.reverse()
+        
+        return lineage
