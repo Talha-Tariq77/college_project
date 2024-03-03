@@ -48,3 +48,10 @@ finally fixed player problem
 now check all the details and functions
 correct
 optimise
+
+
+02.03.24
+ i need to initialise the first child nodes with the UTC value
+ whenever I generate a child node, i need to calculate its UTC
+ otherwise UTC is only updated by selecting a node then backpropogating it
+ it wont update its siblings.

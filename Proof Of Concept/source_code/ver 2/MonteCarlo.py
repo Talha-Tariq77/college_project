@@ -2,6 +2,7 @@ from Node import Node
 import random
 import math
 import Globals
+import pickle
 
 import copy
 
@@ -29,6 +30,16 @@ class MonteCarlo:
         self.current_node = self.root
 
         self.select_order = []
+        self.all_children_selections = []
+
+        self.exploitation_vs_exploration = [0, 0]
+        self.all_UTC_values = []
+
+        self.depth = -1
+        self.all_node_data = []
+
+        # allows me to monitor which part of the equation is supposedly having the biggest impact
+        # on selection at any given time
     
     def generate_root_children(self):
         if self.prev_move == (-1,-1) or not self.possible_moves[self.prev_move[1]]:
@@ -38,9 +49,26 @@ class MonteCarlo:
         else:
             for x in self.possible_moves[self.prev_move[1]]:
                 self.root.children.append(Node((self.root.prev_move[1], x), self.root))
+        
+        # i need to initialise the first child nodes with the UTC value
+        # whenever I generate a child node, i need to calculate its UTC
+        # otherwise UTC is only updated by selecting a node then backpropogating it
+        # it wont update its siblings.
             
     def UTC_calculate(self, a):
-        return (a.win / a.sim) + self.C * (math.sqrt(math.log(a.parent.sim) / a.sim))
+        if a.win == a.sim == 0:
+            exploitation = 0
+        else:
+            exploitation = a.win / a.sim
+        if a.parent.sim == 0:
+            exploration = 0
+        elif a.sim == 0:
+            exploration = 3
+        else:
+            exploration = self.C * (math.sqrt(math.log(a.parent.sim) / a.sim))
+        self.exploitation_vs_exploration[0] += exploitation
+        self.exploitation_vs_exploration[1] += exploration
+        return exploitation + exploration
         
 
     def find_best_UTC(self, nodes):
@@ -67,10 +95,25 @@ class MonteCarlo:
         
         
         # find best utc should minimise if player 0, maximise if player 1 or whatever it is, not just always minimise
-        depth = 0
         while self.current_node.children:
-            depth += 1
+            if self.depth == 0:
+                # current_UTCs = [((x.win / x.sim), self.C * (math.sqrt(math.log(x.parent.sim) / x.sim)), x.UTC) for x in self.current_node.children]
+                pass
+            self.depth += 1
+            for child in self.current_node.children:
+                child.UTC = self.UTC_calculate(child)
             self.current_node = random.choice(self.find_best_UTC(self.current_node.children))
+
+            if self.depth < len(self.all_children_selections):
+                if self.current_node.prev_move in self.all_children_selections[self.depth].keys():
+                    self.all_children_selections[self.depth][self.current_node.prev_move] += 1
+                else:
+                    self.all_children_selections[self.depth][self.current_node.prev_move] = 1
+            else:
+                self.all_children_selections.append({self.current_node.prev_move: 1})
+            #     self.all_children_selections[self.depth].append(self.current_node.prev_move)
+            # else:
+            #     self.all_children_selections[self.depth] = [self.current_node.prev_move]
 
             if self.current_node.prev_move[1] not in self.possible_moves[self.current_node.prev_move[0]]:
                 pass
@@ -89,7 +132,7 @@ class MonteCarlo:
         self.select_order.append(self.current_node.prev_move)
         if Globals.checkWinGrid(self.major_grid, self.current_node.prev_move[0]):
             pass
-        if depth > 50:
+        if self.depth > 50:
             pass
         Globals.updateMajorGrid(self.major_grid, self.current_state, self.current_node.prev_move, self.possible_moves)
 
@@ -116,85 +159,55 @@ class MonteCarlo:
             if node is win, then just add it?
             and if its loss then just do that?
             ig?
-
             so the simulation would need to be altered to first check if its already a game-ender"""
+
 
         
     def expansion(self):
         # some problem with expansion allows generating children from moves not in the possible moves
-        result = Globals.checkWinGrid(self.major_grid, self.prev_move[0])
-        if result is not None:
-            self.player = Globals.swap(self.player)
-            return result 
-        elif Globals.checkWinGridFull(self.current_state[self.prev_move[1]]) is not None:
-            choose_from = []
-            for i in range(len(self.possible_moves)):
-                if len(self.possible_moves[i]) > 0:
-                    choose_from.append(i)
+        if len(self.possible_moves[self.prev_move[1]]) > 0:
+            move1 = self.prev_move[1]
+            for move2 in self.possible_moves[self.prev_move[1]]:
+                self.current_node.children.append(Node((move1, move2), parent=self.current_node))
 
-            move1 = random.choice(choose_from)
+            # move = self.prev_move[1], random.choice(self.possible_moves[self.prev_move[1]])
+            # self.prev_move = move
+        elif Globals.checkWinGrid(self.major_grid, self.prev_move[0]) is not None:
+            # is current node a leaf node, if so keep at leaf node
+            self.player = Globals.swap(self.player) # is this correct?
+            return None
+        
+        elif self.major_grid[self.prev_move[1]] in Globals.winners:
+            for move1 in range(len(self.possible_moves)):
+                for move2 in self.possible_moves[move1]:
+                    self.current_node.children.append(Node((move1, move2), parent=self.current_node))
 
-                # what to do if empty
-                # better way to generate when more full - look at major grid, or possible moves values not equal to [], when choosing randomly
-    
-
-            move2 = random.choice(self.possible_moves[move1])
-
-            move = move1, move2
-            self.prev_move = move
-            # print("brancha", move)
-            # branch a at fault
-
-        elif len(self.possible_moves[self.prev_move[1]]) > 0:
-            move = self.prev_move[1], random.choice(self.possible_moves[self.prev_move[1]])
-            self.prev_move = move
-            # print("branchb", move)
         else:
             print("lineage")
             print(self.current_node.get_lineage())
             pass
 
-#         if len(self.possible_moves[self.current_node.prev_move[1]]) > 0:
-#             move = self.current_node.prev_move[1], random.choice(self.possible_moves[self.current_node.prev_move[1]])
-#             if self.current_node.prev_move[0] == 4:
-#                 pass
+        self.depth += 1
 
-# # check win of grid 
-#         elif Globals.updateMajorGrid(self.major_grid, self.current_state, self.current_node.prev_move, self.possible_moves) is not None:
-#             self.prev_move = self.current_node.prev_move
-#             if self.current_node.prev_move[0] == 4:
-#                 pass
-#             print("lineage")
-#             print(self.current_node.get_lineage())
-#             return 1
-#         else:
-#             # if self.major_grid == ["D" for i in range(9)]:
-#             choose_from = []
-#             for i in range(len(self.possible_moves)):
-#                 if len(self.possible_moves[i]) > 0:
-#                     choose_from.append(i)
+        if self.depth >= len(self.all_children_selections):
+            self.all_children_selections.append({})
 
-#             move1 = random.choice(choose_from)
+        for child_node in self.current_node.children:
+                self.all_children_selections[self.depth][child_node.prev_move] = 0
+            
+        child = random.choice(self.current_node.children)
 
-#                 # what to do if empty
-#                 # better way to generate when more full - look at major grid, or possible moves values not equal to [], when choosing randomly
-    
+        self.all_children_selections[self.depth][child.prev_move] += 1
 
-#             move2 = random.choice(self.possible_moves[move1])
+        self.prev_move = child.prev_move
 
-#             move = move1, move2
-        
         if self.prev_move[1] not in self.possible_moves[self.prev_move[0]]:
             pass
         elif self.prev_move[0] == 4:
             pass
-
-        # move = random.choice(self.get_valid_moves(node.prev_move))
-        child = Node(prev_move=self.prev_move, parent=self.current_node)
-
         self.possible_moves[self.prev_move[0]].remove(self.prev_move[1])
 
-        self.current_node.children.append(child)
+        # here add a UTC calculator?
 
         self.current_state[child.prev_move[0]][child.prev_move[1]] = Globals.winners[self.player]
 
@@ -299,8 +312,6 @@ class MonteCarlo:
 
             self.current_node.parent.sim += 1
 
-            self.current_node.UTC = self.UTC_calculate(self.current_node)
-
             self.current_node = self.current_node.parent
         
         self.current_state = copy.deepcopy(self.init_state)
@@ -308,6 +319,7 @@ class MonteCarlo:
         self.major_grid = self.init_major_grid[:]
         self.prev_move = self.init_prev_move[:]
         self.player = self.init_player
+        self.depth = 0
         # del player?
     
     def play_out(self, moves):
@@ -329,30 +341,87 @@ class MonteCarlo:
         pass
 
     def tree_search(self):
-        max_iterations = 1500
+        max_iterations = 6000
         i = 0
         test_moves = [(4, 1), (1, 7), (7, 1), (1, 3), (3, 8), (8, 4), (4, 0), (0, 8), (8, 6), (6, 5), (5, 2), (2, 4), (4, 6), (6, 3), (3, 0), (0, 2), (2, 6), (6, 1), (1, 4), (4, 2), (2, 1), (1, 1), (1, 2), (2, 5), (5, 6), (6, 2), (2, 3), (3, 6), (6, 8), (8, 2), (2, 7), (7, 3), (3, 5), (5, 5), (5, 1), (1, 5), (5, 4), (4, 5), (4, 3), (3, 3), (3, 2)]
         # self.play_out(test_moves)
-
         while i < max_iterations:
             # print("start iteration")
             self.selection()
+
             # print("select order:\n", self.select_order)
 
-            expansion_result = self.expansion()
-            if expansion_result is not None:
-                self.backpropogation(expansion_result)
-            else:
-                sim_result = self.simulation()
-                self.backpropogation(sim_result)
+            self.expansion()
+            sim_result = self.simulation()
+            self.backpropogation(sim_result)
 
             i += 1
             if i == max_iterations - 1:
                 pass
         
+        self.find_all_node_data(0, self.current_node)
+        # self.display_all_node_data()
+
+        for depth in range(len(self.all_node_data)):
+            print("depth: {}, nodes: {}".format(depth, len(self.all_node_data[depth])))
+
+        outputFile = open("outputdata.pkl", 'wb')
+        pickle.dump(self.all_node_data, outputFile)
+        outputFile.close()
+
+        
+        # display_all_children_selections(self.all_children_selections)
+
+        # self.find_all_UTCs(0, self.current_node)
+        # self.display_all_UTCs()
+        # self.display_all_UTC_totals()
         return random.choice(self.find_best_UTC(self.root.children))
+
+
+    def find_all_node_data(self, depth, node):
+        if depth >=  len(self.all_node_data):
+            self.all_node_data.append({})
+        self.all_node_data[depth][node] = [node.prev_move, node.win, node.sim, node.UTC]
+
+        for child in node.children:
+            self.find_all_node_data(depth + 1, child)
     
+    def display_all_node_data(self):
+        for depth in range(len(self.all_node_data)):
+            print("depth: {}".format(depth))
+            for node in self.all_node_data[depth].keys():
+                print(self.all_node_data[depth][node], end=", ")
+            print()
+
+    # def find_all_UTCs(self, depth, node):
+    #     if depth >= len(self.all_UTC_values):
+    #         self.all_UTC_values.append({})
+
+    #     self.all_UTC_values[depth][node.prev_move] = node.UTC
+
+    #     for child in node.children:
+    #         self.find_all_UTCs(depth+1, child)
+        
+    # def display_all_UTCs(self):
+    #     print("\nall UTC values: \n")
+    #     for depth in range(len(self.all_UTC_values)):
+    #         print("depth {}".format(depth))
+    #         print(self.all_UTC_values[depth])
+
+    # def display_all_UTC_totals(self):
+    #     for i in range(len(self.all_children_selections) + 1):
+    #         total = 0
+    #         for utc in self.all_UTC_values[i]:
+    #             total += utc
+    #         print("self.depth: {}, total: {}".format(i, total))
     # self.player still swapping
+
+    # expand all child nodes, then choose one at random to select
+    # this means dont need to recalculate UTC values at back-propogation stage
+    # since doing at for selection, to update UTC between siblings?
+
+    # have to recalculate UTC at selection
+    # particularly if UTC changes if parent simulations num changes
     
     """def update_local_variables(self, game_state, major_grid, possible_moves, prev_move):
         self.current_state = game_state
@@ -417,4 +486,19 @@ class MonteCarlo:
     
 
 
-    
+    # see that everything is updated correctly
+    # all data structures
+    # for many runs
+    # look at edge cases, i.e. when grids are full, when terminal node
+
+
+def display_all_children_selections(all_children_selections):
+    for depth in range(len(all_children_selections)):
+        print("self.depth: {}".format(depth))
+        print(all_children_selections[depth])
+
+
+# i need to initialise the first child nodes with the UTC value
+# whenever I generate a child node, i need to calculate its UTC
+# otherwise UTC is only updated by selecting a node then backpropogating it
+# it wont update its siblings.
